@@ -68,6 +68,20 @@
 
 /* 3. Global Text Matter Font Size Increases (Except Headings) */
 /* Cover / Video Gate */
+.opening__copy h2 {
+  line-height: 1.1 !important;
+  gap: 2px !important;
+}
+.opening__copy h2 span {
+  font-size: clamp(34px, 8.5vw, 54px) !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0.02em !important;
+  white-space: nowrap !important;
+}
+.opening__copy h2 i {
+  font-size: 44px !important;
+  margin: 2px 0 !important;
+}
 .opening__copy .opening__eyebrow {
   font-size: 13px !important;
   letter-spacing: 0.24em !important;
