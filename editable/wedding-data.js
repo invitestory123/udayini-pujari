@@ -1,7 +1,6 @@
 // =============================================================================
 // LOTUS LEAF BENGALURU — WEDDING DATA CONFIGURATION
 // Wedding Invitation: Dr. Pujari Rajashekhar & Dr. Udayini Gorla
-// Invitation from Groom's Side
 // =============================================================================
 
 window.WEDDING_DATA = {
@@ -12,10 +11,11 @@ window.WEDDING_DATA = {
     bride: "Dr. Udayini Gorla",
     brideDegree: "M.B.B.S. Civil asst. Surgeon",
     brideParents: "D/o Smt. G. Venkatalakshmamma & Sri. G. Lakshmaiah",
-    invitationType: "Invitation from Groom's Side",
+    eyebrow: "Together with our families",
+    coverEyebrow: "The wedding celebration of",
     openingDate: "20 · November · 2026",
     heroDate: "20 · 11 · 2026",
-    heroNote: "Two souls, two healing hands, united in love and destiny. Come celebrate our forever."
+    heroNote: "Two souls, two healing hands, united in love and destiny."
   },
 
   countdown: {

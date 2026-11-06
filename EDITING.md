@@ -1,7 +1,6 @@
 # Editing Guide — Dr. Pujari Rajashekhar & Dr. Udayini Gorla Wedding Invitation
 
 Wedding invitation for **Dr. Pujari Rajashekhar (M.D. Paediatrics)** & **Dr. Udayini Gorla (M.B.B.S. Civil asst. Surgeon)**.
-Invitation from Groom's Side.
 
 ## Details
 - **Groom**: Dr. Pujari Rajashekhar (M.D. Paediatrics)
