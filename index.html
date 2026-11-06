@@ -22,8 +22,8 @@
   <body>
     <div id="root"></div>
 
-    <!-- Floating Background Music Player -->
-    <audio id="wedding-bgm" loop preload="auto" src="./editable/assets/music.mp3"></audio>
+    <!-- Background Music Player -->
+    <audio id="wedding-bgm" autoplay loop preload="auto" playsinline src="./editable/assets/music.mp3"></audio>
     <div id="bgm-container" class="bgm-float-widget">
       <button
         id="bgm-toggle-btn"
@@ -32,13 +32,13 @@
         aria-label="Toggle background music"
         class="bgm-button"
       >
-        <span id="bgm-pulse-ring" class="bgm-pulse"></span>
-        <svg id="bgm-icon-playing" class="bgm-icon bgm-spin bgm-hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <span id="bgm-pulse-ring" class="bgm-pulse is-active"></span>
+        <svg id="bgm-icon-playing" class="bgm-icon bgm-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <circle cx="12" cy="12" r="3"></circle>
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"></path>
         </svg>
-        <svg id="bgm-icon-paused" class="bgm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg id="bgm-icon-paused" class="bgm-icon bgm-hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
         </svg>
@@ -54,7 +54,7 @@
         const pulseRing = document.getElementById("bgm-pulse-ring");
 
         let isPlaying = false;
-        let userInteracted = false;
+        let userManuallyPaused = false;
 
         function updateUI(playing) {
           isPlaying = playing;
@@ -70,13 +70,18 @@
         }
 
         function playBgm() {
-          if (!bgm) return;
-          bgm.play().then(() => {
-            updateUI(true);
-          }).catch((err) => {
-            console.log("Audio autoplay prevented:", err);
-            updateUI(false);
-          });
+          if (!bgm || userManuallyPaused) return;
+          const promise = bgm.play();
+          if (promise !== undefined) {
+            promise
+              .then(() => {
+                updateUI(true);
+              })
+              .catch(() => {
+                // Autoplay deferred by browser policy until first interaction
+                updateUI(false);
+              });
+          }
         }
 
         function pauseBgm() {
@@ -85,23 +90,45 @@
           updateUI(false);
         }
 
-        function handleFirstInteraction() {
-          if (!userInteracted) {
-            userInteracted = true;
+        window.playWeddingMusic = function () {
+          userManuallyPaused = false;
+          playBgm();
+        };
+
+        window.pauseWeddingMusic = function () {
+          userManuallyPaused = true;
+          pauseBgm();
+        };
+
+        // 1. Immediate auto-play attempt on script execution
+        playBgm();
+
+        // 2. Auto-play on DOM and window ready states
+        document.addEventListener("DOMContentLoaded", playBgm);
+        window.addEventListener("load", playBgm);
+
+        // 3. Fallback auto-play on first user touch/click/scroll anywhere
+        function onFirstInteraction() {
+          if (!isPlaying && !userManuallyPaused) {
             playBgm();
           }
         }
 
-        document.addEventListener("click", handleFirstInteraction, { passive: true });
-        document.addEventListener("touchstart", handleFirstInteraction, { passive: true });
+        const events = ["pointerdown", "touchstart", "touchend", "click", "scroll", "keydown"];
+        events.forEach((evt) => {
+          window.addEventListener(evt, onFirstInteraction, { capture: true, passive: true });
+          document.addEventListener(evt, onFirstInteraction, { capture: true, passive: true });
+        });
 
+        // 4. Toggle button click handler
         if (toggleBtn) {
           toggleBtn.addEventListener("click", function (e) {
             e.stopPropagation();
-            userInteracted = true;
             if (isPlaying) {
+              userManuallyPaused = true;
               pauseBgm();
             } else {
+              userManuallyPaused = false;
               playBgm();
             }
           });
