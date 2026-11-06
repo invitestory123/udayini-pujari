@@ -6,7 +6,7 @@
 window.WEDDING_DATA = {
   couple: {
     groom: "Dr. Pujari Rajashekhar",
-    coverGroom: "Dr. Pujari",
+    coverGroom: "Dr. Rajashekhar",
     groomDegree: "M.D. Paediatrics",
     groomParents: "S/o Smt. Lakshmi & Sri. Pujari Lakshmikantha swamy",
     bride: "Dr. Udayini Gorla",
